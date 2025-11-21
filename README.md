@@ -445,13 +445,6 @@ Use `-s` flag to see:
 - Key derivation time
 - Keypair creation time
 
-## Project Information
-
-- **Version**: 1.5.3
-- **License**: MIT
-- **Repository**: [github.com/definesystems/solvanity](https://github.com/definesystems/solvanity)
-- **Issues**: [Report bugs or request features](https://github.com/definesystems/solvanity/issues)
-
 ## Getting Help
 
 ```bash
@@ -470,4 +463,4 @@ For development setup, contributing guidelines, and technical details, see [CONT
 - The Bun team for blazing-fast JavaScript runtime
 - The Solana Foundation for SDK
 - Commander.js for excellent CLI framework
-- Define Systems and contributors for development
+- Define SDK
