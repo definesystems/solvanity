@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Vulnerability
+    url: https://github.com/definesystems/solvanity/security
+    about: Please report security vulnerabilities privately via GitHub Security or email
+  - name: Questions & Discussions
+    url: https://github.com/definesystems/solvanity/discussions
+    about: Ask questions and discuss Solvanity with the community
+  - name: Documentation
+    url: https://github.com/definesystems/solvanity#readme
+    about: Read the documentation for help and usage examples

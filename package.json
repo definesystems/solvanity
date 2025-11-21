@@ -1,0 +1,51 @@
+{
+  "name": "Solvanity",
+  "version": "1.5.3",
+  "description": "A high-performance Solana vanity address generator CLI built with Bun",
+  "main": "solvanity.js",
+  "type": "module",
+  "scripts": {
+    "start": "bun solvanity.js --help",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "solana",
+    "blockchain",
+    "cryptocurrency",
+    "vanity",
+    "address",
+    "generator",
+    "bun",
+    "cli"
+  ],
+  "author": "Define Systems",
+  "license": "MIT",
+  "dependencies": {
+    "@solana/web3.js": "^1.98.4",
+    "bip39-light": "^1.0.7",
+    "bs58": "^6.0.0",
+    "chalk": "^5.6.0",
+    "commander": "^14.0.0",
+    "ed25519-hd-key": "^1.3.0",
+    "ora": "^8.2.0",
+    "qrcode-terminal": "^0.12.0"
+  },
+  "engines": {
+    "bun": "=1.2.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/definesystems/solvanity.git"
+  },
+  "bugs": {
+    "url": "https://github.com/definesystems/solvanity/issues"
+  },
+  "homepage": "https://github.com/definesystems/solvanity#readme",
+  "bin": {
+    "solvanity": "./solvanity.js"
+  },
+  "devDependencies": {
+    "vitest": "4.0.12"
+  }
+}
