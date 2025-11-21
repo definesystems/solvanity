@@ -8,7 +8,7 @@
 
 A high-performance Solana vanity address generator CLI built with Bun.
 
-![Solvanity CLI](https://placehold.co/800x400)
+![Solvanity CLI](repo.png)
 
 ## 🚀 Quick Start
 
