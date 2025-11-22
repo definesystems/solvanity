@@ -8,6 +8,8 @@ bun-debug.log*
 # Testing
 coverage/
 .vitest/
+benchmark-after.txt
+benchmark-before.txt
 
 # Production
 build/
@@ -63,3 +65,4 @@ tmp/
 temp/
 *.tmp
 .cache/
+

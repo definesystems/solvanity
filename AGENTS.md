@@ -103,10 +103,11 @@ Workers use same file, different execution paths based on `isMainThread`.
 1. Generate BIP39 12-word mnemonic
 2. Optional blacklist filtering
 3. Convert mnemonic → seed (BIP39)
-4. Derive keypair (HD path: `m/44'/501'/0'/0'`)
-5. Extract Base58 public key
-6. Match prefix/suffix pattern
-7. Return match or loop
+4. Derive 32-byte private key (HD path: `m/44'/501'/0'/0'`)
+5. Create keypair using `createKeyPairFromPrivateKeyBytes()` from `@solana/keys`
+6. Extract Solana address using `getAddressFromPublicKey()` from `@solana/addresses`
+7. Match prefix/suffix pattern
+8. Return match or loop
 
 ### Key Components
 
@@ -120,7 +121,7 @@ Workers use same file, different execution paths based on `isMainThread`.
 
 **`WorkerManager` class**: Thread lifecycle, auto-restart, health monitoring (1s interval)
 
-**`mnemonicToPrivateKey()` function (lines 64-81)**: BIP39 → Solana private key conversion
+**`mnemonicToPrivateKey()` function (lines 65-100)**: BIP39 → Solana private key conversion (async)
 
 ### Commands
 - **generate** (default): Vanity address generation with prefix/suffix
@@ -268,7 +269,7 @@ if (count <= 0) throw error
 ## Dependencies
 
 **Production**:
-- `@solana/web3.js` (^1.98.4) - Solana SDK
+- `@solana/kit` (^5.0.0) - Modern Solana SDK (includes `@solana/keys`, `@solana/addresses`, and 40+ modular packages)
 - `bip39-light` (^1.0.7) - Mnemonic generation
 - `ed25519-hd-key` (^1.3.0) - HD key derivation
 - `bs58` (^6.0.0) - Base58 encoding
@@ -281,6 +282,8 @@ if (count <= 0) throw error
 - `vitest` (4.0.12) - Testing framework
 
 All dependencies are well-established, actively maintained packages.
+
+**Note**: As of v1.6.0, Solvanity uses `@solana/kit` v5.0.0 (the modern, modular evolution of `@solana/web3.js`).
 
 ## Error Handling
 

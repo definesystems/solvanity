@@ -12,7 +12,8 @@
  */
 
 import { Command } from 'commander';
-import {Keypair} from '@solana/web3.js';
+import { createKeyPairFromPrivateKeyBytes } from '@solana/keys';
+import { getAddressFromPublicKey } from '@solana/addresses';
 import * as bip39 from 'bip39-light';
 import {derivePath} from 'ed25519-hd-key';
 import {Worker, isMainThread, parentPort, workerData} from 'worker_threads';
@@ -58,10 +59,10 @@ const isValidBase58 = (str) => {
 /**
  * Converts a BIP39 mnemonic phrase to a Solana private key
  * @param {string} mnemonic - 12-word mnemonic phrase
- * @returns {string} Base58-encoded private key
+ * @returns {Promise<string>} Base58-encoded private key (64 bytes: 32 private + 32 public)
  * @throws {Error} If conversion fails
  */
-const mnemonicToPrivateKey = (mnemonic) => {
+const mnemonicToPrivateKey = async (mnemonic) => {
   try {
     // Convert mnemonic to seed
     const seed = bip39.mnemonicToSeed(mnemonic);
@@ -70,11 +71,29 @@ const mnemonicToPrivateKey = (mnemonic) => {
     const derivedPath = "m/44'/501'/0'/0'";
     const derivedSeed = derivePath(derivedPath, Buffer.from(seed).toString('hex')).key;
 
-    // Create keypair and encode private key
-    const keypair = Keypair.fromSeed(derivedSeed);
-    const privateKey = bs58.encode(keypair.secretKey);
+    // Create keypair from seed (extractable=true to allow key export)
+    const { privateKey, publicKey } = await createKeyPairFromPrivateKeyBytes(derivedSeed, true);
 
-    return privateKey;
+    // Export the private key bytes (32 bytes)
+    const privateKeyJwk = await crypto.subtle.exportKey('jwk', privateKey);
+    const privateKeyBytes = new Uint8Array(
+      Buffer.from(privateKeyJwk.d, 'base64url')
+    );
+
+    // Export the public key bytes (32 bytes)
+    const publicKeyBytes = new Uint8Array(
+      await crypto.subtle.exportKey('raw', publicKey)
+    );
+
+    // Solana's secret key is 64 bytes: 32 private key + 32 public key
+    const secretKey = new Uint8Array(64);
+    secretKey.set(privateKeyBytes, 0);
+    secretKey.set(publicKeyBytes, 32);
+
+    // Encode to Base58
+    const privateKeyBase58 = bs58.encode(secretKey);
+
+    return privateKeyBase58;
   } catch (error) {
     throw new Error(`Failed to convert mnemonic to private key: ${error.message}`);
   }
@@ -388,7 +407,7 @@ const splitFile = async (filename, options) => {
       try {
         const data = JSON.parse(fileContent);
         if (Array.isArray(data)) {
-          data.forEach(item => {
+          for (const item of data) {
             if (item.address && item.mnemonic) {
               addresses.push(item.address);
               mnemonics.push(item.mnemonic);
@@ -396,14 +415,14 @@ const splitFile = async (filename, options) => {
               // Convert to private key if requested
               if (options.privatekey) {
                 try {
-                  privateKeys.push(mnemonicToPrivateKey(item.mnemonic));
+                  privateKeys.push(await mnemonicToPrivateKey(item.mnemonic));
                 } catch (err) {
                   console.warn(chalk.yellow(`Warning: Failed to convert mnemonic for address ${item.address}: ${err.message}`));
                   privateKeys.push(''); // Maintain array alignment
                 }
               }
             }
-          });
+          }
         }
       } catch (err) {
         console.error(chalk.red(`Error: Invalid JSON file: ${err.message}`));
@@ -414,7 +433,7 @@ const splitFile = async (filename, options) => {
     else if (ext === '.txt') {
       detectedFormat = 'txt';
       const lines = fileContent.split('\n').filter(line => line.trim());
-      lines.forEach(line => {
+      for (const line of lines) {
         const parts = line.split(':');
         if (parts.length === 2) {
           addresses.push(parts[0].trim());
@@ -423,14 +442,14 @@ const splitFile = async (filename, options) => {
           // Convert to private key if requested
           if (options.privatekey) {
             try {
-              privateKeys.push(mnemonicToPrivateKey(parts[1].trim()));
+              privateKeys.push(await mnemonicToPrivateKey(parts[1].trim()));
             } catch (err) {
               console.warn(chalk.yellow(`Warning: Failed to convert mnemonic for address ${parts[0].trim()}: ${err.message}`));
               privateKeys.push(''); // Maintain array alignment
             }
           }
         }
-      });
+      }
     } else {
       console.error(chalk.red(`Error: Unsupported file format. Only .json and .txt files are supported.`));
       process.exit(1);
@@ -1845,9 +1864,9 @@ if (!isMainThread) {
    * Generates a keypair from a mnemonic phrase
    * Tracks performance metrics if enabled
    * @param {string} mnemonic - BIP39 mnemonic phrase
-   * @returns {Keypair} Solana keypair
+   * @returns {Promise<Object>} Object with address, privateKey, publicKey, and secretKey
    */
-  const generateKeypairFromMnemonic = (mnemonic) => {
+  const generateKeypairFromMnemonic = async (mnemonic) => {
     const startTotal = collectStats ? performance.now() : 0;
 
     // Step 1: Convert mnemonic to seed
@@ -1861,12 +1880,32 @@ if (!isMainThread) {
     const derivedSeed = derivePath(derivedPath, Buffer.from(seed).toString('hex')).key;
     const deriveTime = collectStats ? performance.now() - startDerive : 0;
 
-    // Step 3: Create keypair
+    // Step 3: Create keypair (extractable=true to allow key export)
     const startKeypair = collectStats ? performance.now() : 0;
-    const keypair = Keypair.fromSeed(derivedSeed);
+    const { privateKey, publicKey } = await createKeyPairFromPrivateKeyBytes(derivedSeed, true);
     const keypairTime = collectStats ? performance.now() - startKeypair : 0;
 
     const totalTime = collectStats ? performance.now() - startTotal : 0;
+
+    // Step 4: Get address from public key
+    const address = await getAddressFromPublicKey(publicKey);
+
+    // Step 5: Export secret key bytes (64 bytes: 32 private + 32 public)
+    // Export the private key bytes (32 bytes)
+    const privateKeyJwk = await crypto.subtle.exportKey('jwk', privateKey);
+    const privateKeyBytes = new Uint8Array(
+      Buffer.from(privateKeyJwk.d, 'base64url')
+    );
+
+    // Export the public key bytes (32 bytes)
+    const publicKeyBytes = new Uint8Array(
+      await crypto.subtle.exportKey('raw', publicKey)
+    );
+
+    // Solana's secret key is 64 bytes: 32 private key + 32 public key
+    const secretKey = new Uint8Array(64);
+    secretKey.set(privateKeyBytes, 0);
+    secretKey.set(publicKeyBytes, 32);
 
     // Track performance metrics with bounded arrays
     if (collectStats) {
@@ -1910,7 +1949,12 @@ if (!isMainThread) {
       }
     }
 
-    return keypair;
+    return {
+      address,
+      secretKey,
+      privateKey,
+      publicKey
+    };
   };
 
   /**
@@ -1966,8 +2010,8 @@ if (!isMainThread) {
         }
 
         // Generate keypair
-        const keypair = generateKeypairFromMnemonic(mnemonic);
-        const address = keypair.publicKey.toString();
+        const keypairData = await generateKeypairFromMnemonic(mnemonic);
+        const address = keypairData.address;
 
         totalAddressesGenerated++;
 
@@ -1979,7 +2023,7 @@ if (!isMainThread) {
           // Convert to private key if requested
           let privateKey = null;
           if (outputPrivateKeys) {
-            privateKey = bs58.encode(keypair.secretKey);
+            privateKey = bs58.encode(keypairData.secretKey);
           }
 
           // Send result to main thread (only if not shutting down)

@@ -1,6 +1,6 @@
 # Solvanity
 
-[![Version](https://img.shields.io/badge/version-1.5.3-blue.svg)](https://github.com/definesystems/solvanity/releases)
+[![Version](https://img.shields.io/badge/version-1.6.0-blue.svg)](https://github.com/definesystems/solvanity/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Bun](https://img.shields.io/badge/bun-1.2.5-orange.svg)](https://bun.sh)
 [![Security](https://img.shields.io/badge/security-audited-brightgreen.svg)](SECURITY_AUDIT.md)
@@ -461,6 +461,6 @@ For development setup, contributing guidelines, and technical details, see [CONT
 ## Acknowledgements
 
 - The Bun team for blazing-fast JavaScript runtime
-- The Solana Foundation for SDK
+- Anza and the Solana Foundation for @solana/kit (modern Solana JavaScript SDK)
 - Commander.js for excellent CLI framework
-- Define SDK
+- The open-source community for essential cryptographic libraries

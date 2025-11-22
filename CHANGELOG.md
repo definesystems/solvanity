@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2025-11-23
+
+### Changed
+- **Major dependency upgrade**: Migrated from `@solana/web3.js` v1.x to `@solana/kit` v5.0.0
+  - Modern, modular SDK architecture with tree-shakable packages
+  - Uses native Web Crypto API for Ed25519 cryptography
+  - Improved type safety and developer experience
+- Updated keypair generation to use `createKeyPairFromPrivateKeyBytes()` from `@solana/keys`
+- Updated address derivation to use `getAddressFromPublicKey()` from `@solana/addresses`
+- Refactored `mnemonicToPrivateKey()` and `generateKeypairFromMnemonic()` to async/await pattern
+
+### Technical
+- Replaced synchronous `Keypair.fromSeed()` with async `createKeyPairFromPrivateKeyBytes()`
+- Updated all keypair operations to work with CryptoKey objects instead of legacy Keypair class
+- Converted `forEach` loops to `for...of` loops for async/await compatibility
+- Enhanced private key export using Web Crypto API (`crypto.subtle.exportKey`)
+
+### Compatibility
+- **No breaking changes** for CLI users - all commands, flags, and options work exactly the same
+- All 23 test suites passing with 100% success rate
+- Maintains full backward compatibility with existing workflows
+
+### Dependencies
+- Added: `@solana/kit@^5.0.0` (includes `@solana/keys`, `@solana/addresses`, and 40+ modular packages)
+- Removed: `@solana/web3.js@^1.98.4`
+
 ## [1.5.3] - 2025-11-20
 
 ### Added
