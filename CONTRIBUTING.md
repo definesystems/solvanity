@@ -268,7 +268,7 @@ Beyond automated tests, manually verify:
 
 ```bash
 # Standard benchmark
-time bun solvanity.js -p sol -n 1000 -s
+time bun solvanity.js -p tst -n 1000 -s
 
 # Thread scaling test
 for t in 1 2 4 8 16; do

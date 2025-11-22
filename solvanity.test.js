@@ -4,6 +4,7 @@ import { readFile, unlink, access } from 'fs/promises';
 import { join } from 'path';
 import bip39 from 'bip39-light';
 import bs58 from 'bs58';
+import { version } from './package.json' with { type: 'json' };
 
 /**
  * Solvanity Test Suite
@@ -136,7 +137,7 @@ describe('CLI Help and Version', () => {
     const { code, stdout } = await runCLI(['--version']);
 
     expect(code).toBe(0);
-    expect(stdout).toContain('1.5.3');
+    expect(stdout).toContain(version);
   });
 });
 

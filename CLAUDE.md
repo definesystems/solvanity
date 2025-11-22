@@ -33,7 +33,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Solvanity is a high-performance Solana vanity address generator CLI built with Bun. It generates Solana wallet addresses with custom prefixes/suffixes using multi-threaded processing. The entire application is contained in a single 2100+ line file (`solvanity.js`) that handles CLI interface, worker thread management, and file operations.
 
-**Version**: 1.6.0
+**Version**: 1.6.1
 **Key Dependencies**:
 - `@solana/kit@^5.0.0` (modern Solana SDK with modular packages)
 - `bip39-light@^1.0.7` (BIP39 mnemonic generation)
@@ -48,7 +48,7 @@ Solvanity is a high-performance Solana vanity address generator CLI built with B
 bun solvanity.js --help
 
 # Generate addresses with prefix
-bun solvanity.js -p sol -n 5
+bun solvanity.js -p tst -n 5
 
 # Generate with statistics enabled
 bun solvanity.js -p abc -n 10 -s

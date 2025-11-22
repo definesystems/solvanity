@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2025-11-23
+
+### Fixed
+- Fixed invalid Base58 examples in documentation
+  - Replaced "sol" prefix examples with "tst" (valid Base58)
+  - "sol" contains 'O' which is excluded from Base58 encoding (0, O, I, l not allowed)
+  - Updated all documentation files: README.md, solvanity.js, AGENTS.md, CLAUDE.md, CONTRIBUTING.md
+  - Updated performance benchmark examples with valid Base58 characters
+- Fixed hardcoded version check in test suite
+  - Version test now imports version from package.json instead of hardcoding "1.5.3"
+  - Makes tests maintainable across version updates
+
+### Documentation
+- Corrected all code examples to use valid Base58 prefix/suffix patterns
+- Improved example clarity for new users to avoid Base58 validation errors
+
 ## [1.6.0] - 2025-11-23
 
 ### Changed
@@ -146,4 +162,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic CLI interface
 - Basic vanity address generation with prefix matching
 
-[1.5.1]: https://github.com/definesystems/solvanity/compare/v1.5.2...v1.5.3
+[1.6.1]: https://github.com/definesystems/solvanity/compare/v1.6.0...v1.6.1
+[1.6.0]: https://github.com/definesystems/solvanity/compare/v1.5.3...v1.6.0

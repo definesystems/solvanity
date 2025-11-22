@@ -211,6 +211,6 @@ We're grateful to the following security researchers who have helped make Solvan
 ---
 
 **Last Updated**: 2025-11-23
-**Version**: 1.6.0
+**Version**: 1.6.1
 
 For general questions, see our [README](README.md) or open a [GitHub issue](https://github.com/definesystems/solvanity/issues).
