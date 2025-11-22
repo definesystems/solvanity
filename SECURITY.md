@@ -6,6 +6,7 @@ We release security updates for the following versions of Solvanity:
 
 | Version | Supported          |
 | ------- | ------------------ |
+| 1.6.x   | :white_check_mark: |
 | 1.5.x   | :white_check_mark: |
 | < 1.5.0 | :x:                |
 
@@ -162,13 +163,15 @@ To maximize security when using Solvanity:
 
 Solvanity uses the following trusted dependencies:
 
-- `@solana/web3.js` - Official Solana SDK
+- `@solana/kit` (v5.0.0+) - Modern Solana SDK (includes `@solana/keys`, `@solana/addresses`, and 40+ modular packages)
 - `bip39-light` - BIP39 mnemonic generation
 - `ed25519-hd-key` - HD key derivation
 - `bs58` - Base58 encoding
 - `chalk`, `ora`, `commander`, `qrcode-terminal` - CLI utilities
 
 All dependencies are from well-known, actively maintained packages. We regularly review and update dependencies to patch security vulnerabilities.
+
+**Note**: As of v1.6.0, Solvanity uses `@solana/kit` (the modern, modular evolution of `@solana/web3.js`) which provides enhanced security through tree-shakable packages and native Web Crypto API support.
 
 ### Checking for Dependency Vulnerabilities
 
@@ -207,7 +210,7 @@ We're grateful to the following security researchers who have helped make Solvan
 
 ---
 
-**Last Updated**: 2025-11-20
-**Version**: 1.5.3
+**Last Updated**: 2025-11-23
+**Version**: 1.6.0
 
 For general questions, see our [README](README.md) or open a [GitHub issue](https://github.com/definesystems/solvanity/issues).

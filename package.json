@@ -1,6 +1,6 @@
 {
   "name": "Solvanity",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "description": "A high-performance Solana vanity address generator CLI built with Bun",
   "main": "solvanity.js",
   "type": "module",
@@ -22,7 +22,7 @@
   "author": "Define Systems",
   "license": "MIT",
   "dependencies": {
-    "@solana/web3.js": "^1.98.4",
+    "@solana/kit": "^5.0.0",
     "bip39-light": "^1.0.7",
     "bs58": "^6.0.0",
     "chalk": "^5.6.0",

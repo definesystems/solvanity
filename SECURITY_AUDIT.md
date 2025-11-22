@@ -54,7 +54,8 @@ Please analyze the code thoroughly and provide a structured security report cove
 - Analyze the random number generation - is it cryptographically secure?
 - Verify the BIP39 mnemonic generation process
 - Check the HD key derivation path (should be m/44'/501'/0'/0' for Solana)
-- Confirm proper use of @solana/web3.js and ed25519-hd-key libraries
+- Confirm proper use of @solana/kit (includes @solana/keys, @solana/addresses) and ed25519-hd-key libraries
+- Verify Web Crypto API usage for key operations
 - Look for any backdoors in the key generation process
 
 ## 4. CODE INJECTION & EXECUTION RISKS
@@ -65,7 +66,7 @@ Please analyze the code thoroughly and provide a structured security report cove
 
 ## 5. DEPENDENCY ANALYSIS
 Examine all imported dependencies:
-- @solana/web3.js
+- @solana/kit (v5.0.0+) - Modern Solana SDK with modular packages
 - bip39-light
 - ed25519-hd-key
 - bs58
@@ -207,7 +208,7 @@ Check the `package.json` file to ensure all dependencies match what's documented
 
 ```json
 {
-  "@solana/web3.js": "^1.98.4",
+  "@solana/kit": "^5.0.0",
   "bip39-light": "^1.0.7",
   "bs58": "^6.0.0",
   "chalk": "^5.6.0",
@@ -219,6 +220,8 @@ Check the `package.json` file to ensure all dependencies match what's documented
 ```
 
 All of these are legitimate, well-known packages used for their documented purposes.
+
+**Note**: As of v1.6.0, `@solana/kit` v5.0.0 is used (the modern evolution of `@solana/web3.js`).
 
 ### 4. Run in Isolated Environment
 For maximum security, run Solvanity on an air-gapped (offline) computer:
@@ -258,13 +261,13 @@ For maximum security, run Solvanity on an air-gapped (offline) computer:
 
 ## Expected Audit Results
 
-For the legitimate, official Solvanity v1.5.2, you should expect:
+For the legitimate, official Solvanity v1.6.0, you should expect:
 
 ✅ **Network Activity**: NONE - No network code present
 ✅ **Data Exfiltration**: NONE - Only writes to local `address/` directory
-✅ **Cryptographic Security**: SECURE - Uses standard BIP39 and Solana derivation
+✅ **Cryptographic Security**: SECURE - Uses standard BIP39, Web Crypto API, and Solana derivation
 ✅ **Code Injection**: NONE - No dynamic code execution
-✅ **Dependencies**: LEGITIMATE - All standard packages
+✅ **Dependencies**: LEGITIMATE - All standard packages (uses @solana/kit v5.0.0)
 ✅ **File Operations**: SAFE - Limited to documented `address/` directory
 ✅ **Worker Threads**: SAFE - Only used for parallel address generation
 ✅ **Blacklist File**: SAFE - Simple word filtering, no execution
@@ -292,6 +295,6 @@ This audit guide is provided as a tool to help users verify code safety. While t
 
 ---
 
-**Last Updated**: 2025-01-20
-**Applies to Version**: 1.5.2
-**Audit Guide Version**: 1.0
+**Last Updated**: 2025-11-23
+**Applies to Version**: 1.6.0
+**Audit Guide Version**: 1.1

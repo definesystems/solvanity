@@ -33,6 +33,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Solvanity is a high-performance Solana vanity address generator CLI built with Bun. It generates Solana wallet addresses with custom prefixes/suffixes using multi-threaded processing. The entire application is contained in a single 2100+ line file (`solvanity.js`) that handles CLI interface, worker thread management, and file operations.
 
+**Version**: 1.6.0
+**Key Dependencies**:
+- `@solana/kit@^5.0.0` (modern Solana SDK with modular packages)
+- `bip39-light@^1.0.7` (BIP39 mnemonic generation)
+- `ed25519-hd-key@^1.3.0` (HD key derivation)
+- `bun@1.2.5` (JavaScript runtime)
+
 ## Development Commands
 
 ### Running the Application
@@ -121,11 +128,12 @@ Workers run the same `solvanity.js` file but execute different code paths based 
 ### Address Generation Pipeline
 1. Generate BIP39 mnemonic (12 words)
 2. Optional blacklist filtering (if `blacklist` file exists)
-3. Convert mnemonic to seed
-4. Derive keypair using path `m/44'/501'/0'/0'`
-5. Extract public key as Base58 address
-6. Pattern match against prefix/suffix
-7. Return match or continue loop
+3. Convert mnemonic to seed using `bip39.mnemonicToSeed()`
+4. Derive 32-byte private key using HD path `m/44'/501'/0'/0'`
+5. Create keypair using `createKeyPairFromPrivateKeyBytes()` from `@solana/keys`
+6. Extract Solana address using `getAddressFromPublicKey()` from `@solana/addresses`
+7. Pattern match against prefix/suffix
+8. Return match or continue loop
 
 ### Commands
 - **Default (generate)**: Generate vanity addresses with optional prefix/suffix
@@ -157,13 +165,22 @@ All generated files are saved to `address/` directory with timestamped filenames
 Solana addresses use Base58 encoding which excludes: `0`, `O`, `I`, `l` (to avoid confusion). Prefix/suffix patterns must only use valid Base58 characters and be max 7 characters.
 
 ### Mnemonic to Private Key Conversion
-Function `mnemonicToPrivateKey()` (lines 64-81):
+Function `mnemonicToPrivateKey()` (lines 65-100) - **async function**:
 1. Converts 12-word mnemonic to seed via BIP39
-2. Derives key using Solana standard path `m/44'/501'/0'/0'`
-3. Creates Ed25519 keypair
-4. Returns Base58-encoded private key
+2. Derives 32-byte key using Solana standard path `m/44'/501'/0'/0'`
+3. Creates Ed25519 keypair using `createKeyPairFromPrivateKeyBytes(derivedSeed, true)`
+   - `true` parameter makes keys extractable for export
+4. Exports private key bytes (32 bytes) using Web Crypto API (`crypto.subtle.exportKey`)
+5. Exports public key bytes (32 bytes)
+6. Concatenates to form Solana's 64-byte secret key format
+7. Returns Base58-encoded secret key
 
 Use `-k/--privatekey` flag to export private keys instead of mnemonics.
+
+**Important**: This function uses `@solana/kit` v5.0.0 APIs:
+- `createKeyPairFromPrivateKeyBytes()` from `@solana/keys`
+- `getAddressFromPublicKey()` from `@solana/addresses`
+- Web Crypto API for key material extraction
 
 ### Blacklist Filtering
 Optional `blacklist` file in root directory can contain unwanted mnemonic words (one per line, case-insensitive). Workers check generated mnemonics against this list.
