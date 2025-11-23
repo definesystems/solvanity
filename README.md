@@ -1,6 +1,6 @@
 # Solvanity
 
-[![Version](https://img.shields.io/badge/version-1.6.0-blue.svg)](https://github.com/definesystems/solvanity/releases)
+[![Version](https://img.shields.io/badge/version-1.6.1-blue.svg)](https://github.com/definesystems/solvanity/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Bun](https://img.shields.io/badge/bun-1.2.5-orange.svg)](https://bun.sh)
 [![Security](https://img.shields.io/badge/security-audited-brightgreen.svg)](SECURITY_AUDIT.md)
@@ -13,9 +13,9 @@ A high-performance Solana vanity address generator CLI built with Bun.
 ## 🚀 Quick Start
 
 ### Most Common Use Case
-Generate a Solana address starting with "sol":
+Generate a Solana address starting with "tst":
 ```bash
-bun solvanity.js -p sol
+bun solvanity.js -p tst
 ```
 
 ### Installation
@@ -31,7 +31,7 @@ cd solvanity
 bun install
 
 # Generate your first vanity address
-bun solvanity.js -p sol
+bun solvanity.js -p tst
 ```
 
 ## 🛡️ Security Best Practices
@@ -82,7 +82,7 @@ bun solvanity.js -p abc -n 10
 bun solvanity.js -x xyz -n 3
 
 # Generate with both prefix and suffix
-bun solvanity.js -p sol -x 123
+bun solvanity.js -p tst -x 123
 ```
 
 ### Command Reference
@@ -151,8 +151,8 @@ Generate cryptographically secure random token distribution values across multip
 
 #### For Beginners
 ```bash
-# Generate one address starting with "sol"
-bun solvanity.js -p sol
+# Generate one address starting with "tst"
+bun solvanity.js -p tst
 
 # Generate 5 addresses and display them
 bun solvanity.js -n 5 -o display
@@ -164,7 +164,7 @@ bun solvanity.js -n 10 -f txt
 #### For Advanced Users
 ```bash
 # High-performance generation with statistics
-bun solvanity.js -n 100 -p sol -t 16 -s
+bun solvanity.js -n 100 -p tst -t 16 -s
 
 # Generate with QR codes for mobile
 bun solvanity.js -p pay -o both -q
@@ -176,7 +176,7 @@ bun solvanity.js -n 10 -k --filename secure-keys.json
 bun solvanity.js -n 20 -o split
 
 # Generate with prefix and save split files as TXT
-bun solvanity.js -p sol -n 5 -o split -f txt
+bun solvanity.js -p tst -n 5 -o split -f txt
 ```
 
 #### File Management
@@ -321,11 +321,11 @@ bun solvanity.js distribute -a 10000 -w 100 -f txt
 ### Generation Times
 | Pattern | Example | Estimated Time |
 |---------|---------|----------------|
-| 1 char | `-p s` | < 1 second |
-| 2 chars | `-p so` | 1-5 seconds |
-| 3 chars | `-p sol` | 10-60 seconds |
-| 4 chars | `-p sola` | 5-30 minutes |
-| 5 chars | `-p solan` | 2-24 hours |
+| 1 char | `-p t` | < 1 second |
+| 2 chars | `-p ts` | 1-5 seconds |
+| 3 chars | `-p tst` | 10-60 seconds |
+| 4 chars | `-p test` | 5-30 minutes |
+| 5 chars | `-p tests` | 2-24 hours |
 
 ### Optimization Tips
 - **Default Settings**: Automatically uses optimal thread count

@@ -261,7 +261,7 @@ For maximum security, run Solvanity on an air-gapped (offline) computer:
 
 ## Expected Audit Results
 
-For the legitimate, official Solvanity v1.6.0, you should expect:
+For the legitimate, official Solvanity v1.6.1, you should expect:
 
 ✅ **Network Activity**: NONE - No network code present
 ✅ **Data Exfiltration**: NONE - Only writes to local `address/` directory
@@ -296,5 +296,5 @@ This audit guide is provided as a tool to help users verify code safety. While t
 ---
 
 **Last Updated**: 2025-11-23
-**Applies to Version**: 1.6.0
+**Applies to Version**: 1.6.1
 **Audit Guide Version**: 1.1

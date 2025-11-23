@@ -36,7 +36,7 @@ bun install
 bun solvanity.js --help
 
 # Generate with prefix
-bun solvanity.js -p sol -n 5
+bun solvanity.js -p tst -n 5
 
 # With statistics
 bun solvanity.js -p abc -n 10 -s
@@ -326,7 +326,7 @@ Always verify:
 ### Performance Testing
 ```bash
 # Benchmark generation
-time bun solvanity.js -p sol -n 1000 -s
+time bun solvanity.js -p tst -n 1000 -s
 
 # Thread scaling
 for t in 1 2 4 8 16; do

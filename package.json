@@ -1,6 +1,6 @@
 {
   "name": "Solvanity",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "A high-performance Solana vanity address generator CLI built with Bun",
   "main": "solvanity.js",
   "type": "module",

@@ -2079,7 +2079,7 @@ A high-performance Solana vanity address generator/____/
     .version(version)
     .addHelpText('after', `
 ${chalk.bold('Quick Start:')}
-  $ solvanity -p sol                    Generate address starting with "sol"
+  $ solvanity -p tst                    Generate address starting with "tst"
   $ solvanity -p abc -n 5               Generate 5 addresses with prefix "abc"
   $ solvanity distribute -a 1000 -w 10  Distribute 1000 tokens to 10 wallets
 
@@ -2115,7 +2115,7 @@ ${chalk.bold('Examples:')}
   $ solvanity
 
   ${chalk.dim('# Generate with prefix')}
-  $ solvanity -p sol
+  $ solvanity -p tst
   $ solvanity -p abc -n 10
 
   ${chalk.dim('# Generate with suffix')}
@@ -2124,7 +2124,7 @@ ${chalk.bold('Examples:')}
   ${chalk.dim('# Advanced options')}
   $ solvanity -p pay -o both -q        ${chalk.dim('# Display + save with QR codes')}
   $ solvanity -n 20 -o split -f txt    ${chalk.dim('# Split output as TXT files')}
-  $ solvanity -p sol -s                ${chalk.dim('# Show performance statistics')}
+  $ solvanity -p tst -s                ${chalk.dim('# Show performance statistics')}
 
 ${chalk.bold('Output Modes:')}
   ${chalk.cyan('display')}   - Show on screen only (no files)
